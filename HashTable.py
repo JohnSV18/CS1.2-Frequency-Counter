@@ -6,12 +6,7 @@ class HashTable:
     self.size = size
     self.arr = self.create_arr(size)
 
-
-  # 1️⃣ TODO: Complete the create_arr method.
-
-  # Each element of the hash table (arr) is a linked list.
-  # This method creates an array (list) of a given size and populates each of its elements with a LinkedList object.
-
+# Creates an array with linked lists
   def create_arr(self, size):
      
     arr = []
@@ -21,14 +16,7 @@ class HashTable:
       arr.append(linked_list)
 
     return arr
-
-
-
-
-  # 2️⃣ TODO: Create your own hash function.
-
-  # Hash functions are a function that turns each of these keys into an index value that we can use to decide where in our list each key:value pair should be stored. 
-
+# Hash function that will give us an index from counting the distance from a (first letter of the alphabet)
   def hash_func(self, key):
     first_letter = key[0].lower()
     distance_from_a = ord(first_letter) - ord('a')
@@ -36,41 +24,33 @@ class HashTable:
 
     return index
 
+# inserting key and value to the linked list
+  def insert(self, key, value=1):
+    key_hash = self.hash_func(key)
+    linked_list = self.arr[key_hash]
 
-  # 3️⃣ TODO: Complete the insert method.
+    current = linked_list.head
 
-  # Should insert a key value pair into the hash table, where the key is the word and the value is a counter for the number of times the word appeared. When inserting a new word in the hash table, be sure to check if there is a Node with the same key in the table already.
+    while current != None:
 
-  def insert(self, key, value):
-    if self.arr[key_hash] == None:
-      self.arr[key_hash] = (key, value)
-      return key_hash
+      if current.data[0] == key:
+        current.data[1] += value
+        return
 
-    else:
+      current = current.next
+    
+    linked_list.append([key, value])
+  
 
-      ptr = (key_hash + 1) % self.size
-
-      while ptr != key_hash:
-        if self.arr[ptr] == None:
-          self.arr[ptr] = (key,value)
-        else:
-          ptr =  (ptr + 1) % self.size
-      return key_hash
-
-
-
-
-  # 4️⃣ TODO: Complete the print_key_values method.
-
-  # Traverse through the every Linked List in the table and print the key value pairs.
-
-  # For example: 
-  # a: 1
-  # again: 1
-  # and: 1
-  # blooms: 1
-  # erase: 2
-
+# printing the key and values of the array
   def print_key_values(self):
+    
     for linked_list in self.arr:
-      linked_list.print_nodes()
+      current = linked_list.head
+
+      while current != None:
+        if current.data:
+          print(f'{current.data[0]}: {current.data[1]}')
+
+          current = current.next 
+
